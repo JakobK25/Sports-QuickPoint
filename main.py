@@ -29,11 +29,11 @@ connection = psycopg2.connect(
 )
 db = connection.cursor()
 
-## Setup time
+# Setup time
 startTime = datetime.now()
 print("Start running at: ", startTime)
 
-## Generate random data and time
+# Generate random data and time
 team_names = ["HOLD1", "HOLD2", "HOLD3", "HOLD4"]
 
 for i in range(10):
@@ -52,7 +52,7 @@ for i in range(10):
     delay = random.randint(1, 5)
     time.sleep(delay)
 
-## Read data from database
+# Read data from database
 db.execute("SELECT * FROM public.scores ORDER BY scores_time DESC LIMIT 10")
 record = db.fetchall()
 
@@ -70,8 +70,3 @@ print(f"Team with most goals: {team_most_goals[0][0]}")
 print(len(record), "rows returned")
 
 connection.close()
-
-
-
-
-

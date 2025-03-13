@@ -1,5 +1,5 @@
 services:
-  my-service:
+  sqp_postgres_db:
     image: postgres
     ports:
       - 5432:5432
