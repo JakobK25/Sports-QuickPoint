@@ -4,7 +4,7 @@ services:
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_DB=scoredb
-      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=POSTGRES_DB
+      - POSTGRES_PASSWORD=POSTGRES_PASSWORD
     volumes:
-       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
