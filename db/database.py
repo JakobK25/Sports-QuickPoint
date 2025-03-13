@@ -27,3 +27,14 @@ def insert_score(db, timestamp, team_name, score):
         "INSERT INTO public.scores (scores_time, scores_team_name, scores_goals) VALUES (%s, %s, %s)", 
         (timestamp, team_name, str(score))
     )
+
+def get_match_scores(db, team1, team2):
+    db.execute(
+        "SELECT scores_goals FROM public.scores WHERE scores_team_name = %s OR scores_team_name = %s", 
+        (team1, team2)
+    )
+    return db.fetchall()
+
+def get_event(db, team_name):
+    db.execute("SELECT * FROM public.scores WHERE scores_team_name = %s", (team_name,))
+    return db.fetchall()
