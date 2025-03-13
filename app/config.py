@@ -9,6 +9,7 @@ def load_config():
     
     config = {
         "POSTGRES_DB": os.getenv("POSTGRES_DB"),
-        "POSTGRES_PASSWORD": os.getenv("POSTGRES_PASSWORD")
+        "POSTGRES_PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+        "POSTGRES_USER": os.getenv("POSTGRES_USER"),
     }
     return config

@@ -1,13 +1,24 @@
 import psycopg2
 
 def get_connection(config):
-    connection = psycopg2.connect(
-        database=config["POSTGRES_DB"],
-        user="postgres",
-        password=config["POSTGRES_PASSWORD"],
-        host="127.0.0.1",
-        port=5432
-    )
+    # Try to connect with the service name first
+    try:
+        connection = psycopg2.connect(
+            database=config["POSTGRES_DB"],
+            user=config["POSTGRES_USER"],  # Make sure to use the environment variable
+            password=config["POSTGRES_PASSWORD"],
+            host="sqp_postgres_db",  # Use the service name from compose.yaml
+            port=5432
+        )
+    except:
+        # Fallback to localhost if service name doesn't work
+        connection = psycopg2.connect(
+            database=config["POSTGRES_DB"],
+            user=config["POSTGRES_USER"],
+            password=config["POSTGRES_PASSWORD"],
+            host="127.0.0.1",
+            port=5432
+        )
     return connection, connection.cursor()
 
 def get_recent_scores(db):
