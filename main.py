@@ -52,7 +52,13 @@ for i in range(10):
 ## Read data from database
 db.execute("SELECT * FROM public.scores ORDER BY scores_time DESC LIMIT 10")
 record = db.fetchall()
-print("Data from Database:- ", record)
+
+for team in team_names:
+    db.execute("SELECT scores_goals FROM public.scores WHERE scores_team_name = %s", (team,))
+    goals = db.fetchall()
+    print(f"Team {team} has {len(goals)} goals")
+
+
 print(len(record), "rows returned")
 
 connection.close()
