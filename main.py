@@ -1,8 +1,3 @@
-# Install required libraries
-
-
-# Import libraries
-
 import os
 import time
 import random
@@ -12,6 +7,7 @@ from datetime import datetime
 import psycopg2
 from dotenv import load_dotenv
 from pathlib import Path
+import docker 
 
 # Load the environment variables
 env_path = Path('.') / '.env'
@@ -20,6 +16,34 @@ load_dotenv(env_path)
 # Get environment variables
 db_name = os.getenv("POSTGRES_DB")
 db_password = os.getenv("POSTGRES_PASSWORD")
+
+# Run docker container
+client = docker.from_env()
+client.images.pull("postgres:latest")
+
+# Get absolute path to init.sql file
+init_sql_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'init.sql'))
+
+# Run the container with volume mount for init script
+client.containers.run(
+    "postgres:latest",
+    detach=True,
+    ports={"5432": "5432"},
+    environment={
+        "POSTGRES_DB": db_name, 
+        "POSTGRES_PASSWORD": db_password
+    },
+    volumes={
+        init_sql_path: {
+            'bind': '/docker-entrypoint-initdb.d/init.sql',
+            'mode': 'ro'
+        }
+    },
+    name="postgres_container"
+)
+
+print("Waiting for PostgreSQL to initialize...")
+time.sleep(5)  # Give PostgreSQL time to initialize
 
 # Connect to the database using environment variables
 connection = psycopg2.connect(
