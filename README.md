@@ -1,1 +1,1 @@
-"# Sports-QuickPoint" 
+# Sports-QuickPoint
