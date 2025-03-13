@@ -1,3 +1,8 @@
+# Install required libraries
+
+
+# Import libraries
+
 import os
 import time
 import random
@@ -53,11 +58,16 @@ for i in range(10):
 db.execute("SELECT * FROM public.scores ORDER BY scores_time DESC LIMIT 10")
 record = db.fetchall()
 
+# Print teams goals
 for team in team_names:
     db.execute("SELECT scores_goals FROM public.scores WHERE scores_team_name = %s", (team,))
     goals = db.fetchall()
     print(f"Team {team} has {len(goals)} goals")
 
+# Print team with most goals
+db.execute("SELECT scores_team_name, COUNT(scores_team_name) FROM public.scores GROUP BY scores_team_name ORDER BY COUNT(scores_team_name) DESC LIMIT 1")
+team_most_goals = db.fetchall()
+print(f"Team with most goals: {team_most_goals[0][0]}")
 
 print(len(record), "rows returned")
 
